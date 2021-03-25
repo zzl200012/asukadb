@@ -4,7 +4,9 @@ package version
 import (
 	"asukadb/common"
 	"asukadb/memtable"
+	"encoding/binary"
 	log "github.com/sirupsen/logrus"
+	"io"
 )
 
 type Version struct {
@@ -63,4 +65,34 @@ func (v *Version) Log() {
 			log.Infof("version[%d]: %d", level, v.files[level][i].number)
 		}
 	}
+}
+
+func (v *Version) EncodeTo(w io.Writer) error {
+	binary.Write(w, binary.LittleEndian, v.nextFileNumber)
+	binary.Write(w, binary.LittleEndian, v.seq)
+	for level := 0; level < common.NumLevels; level++ {
+		numFiles := len(v.files[level])
+		binary.Write(w, binary.LittleEndian, int32(numFiles))
+
+		for i := 0; i < numFiles; i++ {
+			v.files[level][i].EncodeTo(w)
+		}
+	}
+	return nil
+}
+
+func (v *Version) DecodeFrom(r io.Reader) error {
+	binary.Read(r, binary.LittleEndian, &v.nextFileNumber)
+	binary.Read(r, binary.LittleEndian, &v.seq)
+	var numFiles int32
+	for level := 0; level < common.NumLevels; level++ {
+		binary.Read(r, binary.LittleEndian, &numFiles)
+		v.files[level] = make([]*SSTFileMeta, numFiles)
+		for i := 0; i < int(numFiles); i++ {
+			var meta SSTFileMeta
+			meta.DecodeFrom(r)
+			v.files[level][i] = &meta
+		}
+	}
+	return nil
 }
