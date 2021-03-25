@@ -10,7 +10,7 @@ import (
 
 func Test_Version_Get(t *testing.T) {
 	v := New("./temp_ver_0")
-	var f SSTFileMeta
+	var f FileMetaData
 	f.number = 123
 	f.smallest = common.NewInternalKey(1, common.TypeValue, []byte("123"), nil)
 	f.largest = common.NewInternalKey(1, common.TypeValue, []byte("125"), nil)

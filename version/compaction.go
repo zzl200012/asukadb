@@ -5,9 +5,11 @@ import log "github.com/sirupsen/logrus"
 
 type Compaction struct {
 	level  int
-	inputs [2][]*SSTFileMeta
+	inputs [2][]*FileMetaData
 }
 
+// Is this a trivial compaction that can be implemented by just
+// moving a single input file to the next level (no merging or splitting)
 func (c *Compaction) isTrivialMove() bool {
 	return len(c.inputs[0]) == 1 && len(c.inputs[1]) == 0
 }

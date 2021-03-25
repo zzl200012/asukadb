@@ -7,15 +7,15 @@ import (
 	"io"
 )
 
-type SSTFileMeta struct {
+type FileMetaData struct {
 	allowSeeks uint64
 	number     uint64
-	fileSize   uint64
-	smallest   *common.InternalKey
-	largest    *common.InternalKey
+	fileSize   uint64  // File size in bytes
+	smallest   *common.InternalKey  // Smallest internal key served by table
+	largest    *common.InternalKey  // Largest internal key served by table
 }
 
-func (meta *SSTFileMeta) EncodeTo(w io.Writer) error {
+func (meta *FileMetaData) EncodeTo(w io.Writer) error {
 	binary.Write(w, binary.LittleEndian, meta.allowSeeks)
 	binary.Write(w, binary.LittleEndian, meta.fileSize)
 	binary.Write(w, binary.LittleEndian, meta.number)
@@ -24,7 +24,7 @@ func (meta *SSTFileMeta) EncodeTo(w io.Writer) error {
 	return nil
 }
 
-func (meta *SSTFileMeta) DecodeFrom(r io.Reader) error {
+func (meta *FileMetaData) DecodeFrom(r io.Reader) error {
 	binary.Read(r, binary.LittleEndian, &meta.allowSeeks)
 	binary.Read(r, binary.LittleEndian, &meta.fileSize)
 	binary.Read(r, binary.LittleEndian, &meta.number)
