@@ -51,14 +51,6 @@ func (v *Version) Get(key []byte) ([]byte, error) {
 	panic("")
 }
 
-func (v *Version) WriteLevel0Table(imm *memtable.MemTable) {
-	panic("")
-}
-
-func (v *Version) DoCompactionWork() bool {
-	panic("")
-}
-
 func (v *Version) Log() {
 	for level := 0; level < common.NumLevels; level++ {
 		for i := 0; i < len(v.files[level]); i++ {
@@ -96,3 +88,41 @@ func (v *Version) DecodeFrom(r io.Reader) error {
 	}
 	return nil
 }
+
+// Compaction related
+
+func (v *Version) WriteLevel0Table(imm *memtable.MemTable) {
+	panic("")
+}
+
+func (v *Version) DoCompactionWork() bool {
+	panic("")
+}
+
+func (v *Version) addFile(level int, meta *SSTFileMeta) {
+	panic("")
+}
+
+func (v *Version) delFile(level int, meta *SSTFileMeta) {
+	panic("")
+}
+
+func (v *Version) overlapInLevel(level int, smallest, largest []byte) bool {
+	panic("")
+}
+
+func (v *Version) getInputInterator(c *Compaction) *MergingIterator {
+	panic("")
+}
+
+func (v *Version) pickCompaction() *Compaction {
+	panic("")
+}
+
+func (v *Version) pickCompactionLevel() int {
+	panic("")
+}
+
+// more func
+
+
