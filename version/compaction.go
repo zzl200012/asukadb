@@ -5,7 +5,8 @@ import log "github.com/sirupsen/logrus"
 
 type Compaction struct {
 	level  int
-	inputs [2][]*FileMetaData
+	// Each compaction reads inputs from "level" and "level+1"
+	inputs [2][]*FileMetaData  // The two sets of inputs
 }
 
 // Is this a trivial compaction that can be implemented by just

@@ -32,11 +32,11 @@ func GetTableFileName(dbname string, number uint64) string {
 }
 
 func GetDescriptorFileName(dbname string, number uint64) string {
-	return fmt.Sprintf("%s/MANIFEST-%06d", dbname, number)
+	return fmt.Sprintf("%s-MANIFEST-%06d", dbname, number)
 }
 
 func GetCurrentFileName(dbname string) string {
-	return dbname + "/CURRENT"
+	return dbname + "-CURRENT"
 }
 func GetTempFileName(dbname string, number uint64) string {
 	return getFilename(dbname, number, "tmp")
