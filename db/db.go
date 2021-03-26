@@ -73,7 +73,7 @@ func (db *DB) Del(key []byte) error {
 func Open(dbName string) *DB {
 	var db DB
 	db.name = dbName
-	db.memTable = new(memtable.MemTable)
+	db.memTable = memtable.New()
 	db.backgroundWorkFinishedSignal = sync.NewCond(&db.mu)
 	fileNum := db.ReadCurrentFile()
 	if fileNum > 0 {

@@ -229,8 +229,8 @@ func (v *Version) DoCompactionWork() bool {
 	if c == nil {
 		return false
 	}
-	log.Tracef("DoCompactionWork begin\n")
-	defer log.Tracef("DoCompactionWork end\n")
+	log.Infof("DoCompactionWork begin\n")
+	defer log.Infof("DoCompactionWork end\n")
 	c.Log()
 	if c.isTrivialMove() {
 		// Move file to next level
@@ -357,6 +357,9 @@ func (v *Version) getInputIterator(c *Compaction) *MergingIterator {
 func (v *Version) pickCompaction() *Compaction {
 	var c Compaction
 	c.level = v.pickCompactionLevel()
+	if c.level < 0 {
+		return nil
+	}
 
 	var smallest, largest *common.InternalKey
 	// Files in level 0 may overlap each other, so pick up all overlapping ones
